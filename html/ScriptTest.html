@@ -1,0 +1,434 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ScriptTest</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-08-21"><meta name="DC.source" content="ScriptTest.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Script to Watch Data Setup #############################################</a></li><li><a href="#2">TIME BOXPLOTS AIMs All Together</a></li><li><a href="#3">RAINCLOUD PLOTS ******************************************************</a></li><li><a href="#4">TIME BOXPLOTS AIMs</a></li><li><a href="#5">Tests ##################################################################</a></li><li><a href="#6">TIME EVALUATION COMPARATION</a></li></ul></div><h2>Script to Watch Data Setup #############################################<a name="1"></a></h2><pre class="codeinput">close <span class="string">all</span>;
+<span class="comment">% It requires previously loaded data at: \Data Demo\AIMs.mat</span>
+<span class="comment">% Labels @AIMs.mat:</span>
+<span class="comment">% DYSKA, DYSKC, AMAN, CLZ</span>
+load([pwd,<span class="string">'\Data Demo\AIMs.mat'</span>]);
+Labels={<span class="string">'DYSK_A'</span>,<span class="string">'+Amantadine'</span>,<span class="string">'DYSK_C'</span>,<span class="string">'+Clozapine'</span>};
+<span class="comment">% Run once and paste AIMs data from sheet</span>
+<span class="comment">% DYSKA=[];</span>
+<span class="comment">% AMAN=[];</span>
+<span class="comment">% DYSKC=[];</span>
+<span class="comment">% CLZ=[];</span>
+
+<span class="comment">%  AIMs Score Options ##############################################</span>
+<span class="comment">% See Description:</span>
+<span class="comment">% &gt;&gt;help plot_aims</span>
+<span class="comment">% /global/global-sum/,</span>
+<span class="comment">% /basic/amplitude/,</span>
+<span class="comment">% /ALO-sum/ALO-basic/</span>
+TypeDysk=<span class="string">'global'</span>;
+<span class="comment">% TimeIntervals: indexes for Minute Intervals:</span>
+<span class="comment">%   [20,40,60,80,100,120,140,160,180]</span>
+<span class="comment">%   [ 1, 2, 3, 4,  5,  6,  7,  8,  9]</span>
+<span class="comment">% Intervals=[2,3,4];</span>
+Intervals=1:9;
+
+<span class="comment">% plot_session(S_DYSKA,S_AMAN,S_DYSKC,S_CLZ,Labels);</span>
+</pre><h2>TIME BOXPLOTS AIMs All Together<a name="2"></a></h2><p>AIMs Time Boxplots Series in the seme Figure</p><pre class="codeinput">[S_DYSKA,AIMS_DYSKA]=plot_aims(DYSKA,TypeDysk,Intervals);
+[S_AMAN,AIMS_AMAN]=plot_aims(AMAN,TypeDysk,Intervals);
+[S_DYSKC,AIMS_DYSKC]=plot_aims(DYSKC,TypeDysk,Intervals);
+[S_CLZ,AIMS_CLZ]=plot_aims(CLZ,TypeDysk,Intervals);
+FigAimsCLZ=gcf;
+FigAimsCLZ.Name=[<span class="string">'All Boxplots '</span>];
+</pre><pre class="codeoutput">&gt;&gt;Selected Time Intervals [minutes]:
+20, 40, 60, 80, 100, 120, 140, 160, 180, 
+ Scored Rodents:   4  
+&gt; Retrieveing global AIMs of Rodent  1  
+&gt; Retrieveing global AIMs of Rodent  2  
+&gt; Retrieveing global AIMs of Rodent  3  
+&gt; Retrieveing global AIMs of Rodent  4  
+&gt;&gt; Box Plots : done.
+&gt;&gt;Selected Time Intervals [minutes]:
+20, 40, 60, 80, 100, 120, 140, 160, 180, 
+ Scored Rodents:   4  
+&gt; Retrieveing global AIMs of Rodent  1  
+&gt; Retrieveing global AIMs of Rodent  2  
+&gt; Retrieveing global AIMs of Rodent  3  
+&gt; Retrieveing global AIMs of Rodent  4  
+&gt;&gt; Detected Plot already &gt;&gt;
+&gt;&gt; Activate Hold On  in Plot ...
+&gt;&gt; Holding Plot: 
+&gt;&gt; Box Plots : done.
+&gt;&gt;Selected Time Intervals [minutes]:
+20, 40, 60, 80, 100, 120, 140, 160, 180, 
+ Scored Rodents:   4  
+&gt; Retrieveing global AIMs of Rodent  1  
+&gt; Retrieveing global AIMs of Rodent  2  
+&gt; Retrieveing global AIMs of Rodent  3  
+&gt; Retrieveing global AIMs of Rodent  4  
+&gt;&gt; Detected Plot already &gt;&gt;
+&gt;&gt; Activate Hold On  in Plot ...
+&gt;&gt; Holding Plot: 
+&gt;&gt; Box Plots : done.
+&gt;&gt;Selected Time Intervals [minutes]:
+20, 40, 60, 80, 100, 120, 140, 160, 180, 
+ Scored Rodents:   4  
+&gt; Retrieveing global AIMs of Rodent  1  
+&gt; Retrieveing global AIMs of Rodent  2  
+&gt; Retrieveing global AIMs of Rodent  3  
+&gt; Retrieveing global AIMs of Rodent  4  
+&gt;&gt; Detected Plot already &gt;&gt;
+&gt;&gt; Activate Hold On  in Plot ...
+&gt;&gt; Holding Plot: 
+&gt;&gt; Box Plots : done.
+</pre><img vspace="5" hspace="5" src="ScriptTest_01.png" alt=""> <h2>RAINCLOUD PLOTS ******************************************************<a name="3"></a></h2><p>Setup: AIMs: {all, lo, li, Ax, Ol}</p><pre class="codeinput">KindofAIMs=<span class="string">'all'</span>;
+<span class="comment">% Get Data</span>
+DYSKAaims=getfield(AIMS_DYSKA,KindofAIMs);
+AMANaims=getfield(AIMS_AMAN,KindofAIMs);
+DYSKCaims=getfield(AIMS_DYSKC,KindofAIMs);
+CLZaims=getfield(AIMS_CLZ,KindofAIMs);
+<span class="comment">% Raincouds of AIMs Time &amp; Raincloud+Boxplot of Session</span>
+[ScoresAMAN,DeltaScoreAMAN,ColorsAMAN]=plot_aims_time(DYSKAaims,AMANaims,<span class="keyword">...</span>
+                    Labels(1:2),Intervals);
+[ScoresCLZ,DeltaScoreCLZ,ColorsCLZ]=plot_aims_time(DYSKCaims,CLZaims,<span class="keyword">...</span>
+                    Labels(3:4),Intervals);
+<span class="comment">% Deltas Figure</span>
+columns2boxplot(DeltaScoreAMAN,DeltaScoreCLZ,{<span class="string">'+AMAN'</span>;<span class="string">'+CLZ'</span>})
+DeltaFig=gca;
+DeltaFig.YLim=[0,100];
+DeltaFig.Title.String=<span class="string">'$\Delta$ Session AIMs'</span>;
+DeltaFig.Title.Interpreter=<span class="string">'latex'</span>;
+</pre><pre class="codeoutput">&gt;&gt; Displaying 2 conditons: 
+with the Following Labels:
+    'DYSK_A'    '+Amantadine'
+
+&gt;&gt;Selected Time Intervals [minutes]:
+20, 40, 60, 80, 100, 120, 140, 160, 180, 
+&gt;&gt; Choose Color:
+&gt;&gt; Choose Color:
+&gt;&gt;Paired Study: same number of mice
+&gt;&gt; Displaying 2 conditons: 
+with the Following Labels:
+    'DYSK_C'    '+Clozapine'
+
+&gt;&gt;Selected Time Intervals [minutes]:
+20, 40, 60, 80, 100, 120, 140, 160, 180, 
+&gt;&gt; Choose Color:
+&gt;&gt; Choose Color:
+&gt;&gt;Paired Study: same number of mice
+&gt;&gt; Displaying 2 boxplots
+with the Following Labels:
+    '+AMAN'
+    '+CLZ'
+
+&gt;&gt; Done.
+</pre><img vspace="5" hspace="5" src="ScriptTest_02.png" alt=""> <img vspace="5" hspace="5" src="ScriptTest_03.png" alt=""> <img vspace="5" hspace="5" src="ScriptTest_04.png" alt=""> <img vspace="5" hspace="5" src="ScriptTest_05.png" alt=""> <img vspace="5" hspace="5" src="ScriptTest_06.png" alt=""> <h2>TIME BOXPLOTS AIMs<a name="4"></a></h2><p>AIMs Time Boxplots Series in the seme Figure</p><pre class="codeinput">plot_aims(DYSKA,TypeDysk,Intervals,ColorsAMAN);
+plot_aims(AMAN,TypeDysk,Intervals,ColorsAMAN);
+FigAimsAMAN=gcf;
+FigAimsAMAN.Name=[<span class="string">'Boxplots '</span>,Labels{1},<span class="string">' &amp; '</span>,Labels{2}];
+plot_aims(DYSKC,TypeDysk,Intervals,ColorsCLZ);
+plot_aims(CLZ,TypeDysk,Intervals,ColorsCLZ);
+FigAimsCLZ=gcf;
+FigAimsCLZ.Name=[<span class="string">'Boxplots '</span>,Labels{3},<span class="string">' &amp; '</span>,Labels{4}];
+</pre><pre class="codeoutput">&gt;&gt;Selected Time Intervals [minutes]:
+20, 40, 60, 80, 100, 120, 140, 160, 180, 
+ Scored Rodents:   4  
+&gt; Retrieveing global AIMs of Rodent  1  
+&gt; Retrieveing global AIMs of Rodent  2  
+&gt; Retrieveing global AIMs of Rodent  3  
+&gt; Retrieveing global AIMs of Rodent  4  
+     No AIMs Plot Related Found
+    No AIMs Plot Related Found
+    No AIMs Plot Related Found
+    No AIMs Plot Related Found
+    No AIMs Plot Related Found
+    No AIMs Plot Related Found
+&gt;&gt; Box Plots : done.
+&gt;&gt;Selected Time Intervals [minutes]:
+20, 40, 60, 80, 100, 120, 140, 160, 180, 
+ Scored Rodents:   4  
+&gt; Retrieveing global AIMs of Rodent  1  
+&gt; Retrieveing global AIMs of Rodent  2  
+&gt; Retrieveing global AIMs of Rodent  3  
+&gt; Retrieveing global AIMs of Rodent  4  
+&gt;&gt; Detected Plot already &gt;&gt;
+&gt;&gt; Activate Hold On  in Plot ...
+&gt;&gt; Holding Plot: 
+&gt;&gt; Box Plots : done.
+&gt;&gt;Selected Time Intervals [minutes]:
+20, 40, 60, 80, 100, 120, 140, 160, 180, 
+ Scored Rodents:   4  
+&gt; Retrieveing global AIMs of Rodent  1  
+&gt; Retrieveing global AIMs of Rodent  2  
+&gt; Retrieveing global AIMs of Rodent  3  
+&gt; Retrieveing global AIMs of Rodent  4  
+    No AIMs Plot Related Found
+     No AIMs Plot Related Found
+    No AIMs Plot Related Found
+    No AIMs Plot Related Found
+    No AIMs Plot Related Found
+    No AIMs Plot Related Found
+    No AIMs Plot Related Found
+&gt;&gt; Box Plots : done.
+&gt;&gt;Selected Time Intervals [minutes]:
+20, 40, 60, 80, 100, 120, 140, 160, 180, 
+ Scored Rodents:   4  
+&gt; Retrieveing global AIMs of Rodent  1  
+&gt; Retrieveing global AIMs of Rodent  2  
+&gt; Retrieveing global AIMs of Rodent  3  
+&gt; Retrieveing global AIMs of Rodent  4  
+&gt;&gt; Detected Plot already &gt;&gt;
+&gt;&gt; Activate Hold On  in Plot ...
+&gt;&gt; Holding Plot: 
+&gt;&gt; Box Plots : done.
+</pre><img vspace="5" hspace="5" src="ScriptTest_07.png" alt=""> <img vspace="5" hspace="5" src="ScriptTest_08.png" alt=""> <h2>Tests ##################################################################<a name="5"></a></h2><p>SESSION SCORES TESTS [h,p]=ttest(ScoresAMAN(:,1),ScoresAMAN(:,2)) [h,p]=ttest(ScoresCLZ(:,1),ScoresCLZ(:,2))</p><p>[h,p]=vartest2(ScoresAMAN(:,1),ScoresAMAN(:,2)) [h,p]=vartest2(ScoresCLZ(:,1),ScoresCLZ(:,2))</p><p>[p,h]=signtest(ScoresAMAN(:,1),ScoresAMAN(:,2)) [p,h]=signtest(ScoresCLZ(:,1),ScoresCLZ(:,2))</p><p>[p,h]=ranksum(ScoresAMAN(:,1),ScoresAMAN(:,2)) [p,h]=ranksum(ScoresCLZ(:,1),ScoresCLZ(:,2))</p><p>[p,h] = signrank(ScoresAMAN(:,1),ScoresAMAN(:,2)) [p,h] = signrank(ScoresCLZ(:,1),ScoresCLZ(:,2))</p><p>% Unpaired [h,p]=ttest2(ScoresAMAN(:,1),ScoresCLZ(:,1)) [h,p]=ttest2(ScoresAMAN(:,2),ScoresCLZ(:,2))</p><h2>TIME EVALUATION COMPARATION<a name="6"></a></h2><p>AIMs: {all, lo, li, Ax, Ol}</p><pre class="codeinput">KindofAIMs=<span class="string">'all'</span>;
+DYSKAaims=getfield(AIMS_DYSKA,KindofAIMs);
+AMANaims=getfield(AIMS_AMAN,KindofAIMs);
+DYSKCaims=getfield(AIMS_DYSKC,KindofAIMs);
+CLZaims=getfield(AIMS_CLZ,KindofAIMs);
+
+<span class="comment">% Tests for all Time Sets of AIMs</span>
+<span class="keyword">for</span> n=1:9
+
+    <span class="comment">%     AMANTADINE        # # #</span>
+    A=DYSKAaims(:,n);
+    B=AMANaims(:,n);
+    [TTEST(n),PVAL(n)]=ttest(A,B);
+    [PVALW(n),WILCTEST(n)] = signrank(A,B);
+    [SIGNTEST(n),PVALS(n)] = vartest2(A,B);
+    [PVALR(n),RANKTEST(n)] = ranksum(A,B);
+
+    <span class="comment">%     CLOZAPINE         # # #</span>
+    C=DYSKCaims(:,n);
+    D=CLZaims(:,n);
+    [TTESTC(n),PVALC(n)]=ttest(C,D);
+    [PVALWC(n),WILCTESTC(n)] = signrank(C,D);
+    [SIGNTESTC(n),PVALSC(n)] = vartest2(C,D);
+    [PVALRC(n),RANKTESTC(n)] = ranksum(C,D);
+    fprintf(<span class="string">'*'</span>)
+<span class="keyword">end</span>
+fprintf(<span class="string">'\n'</span>)
+<span class="comment">% ERROR BARS</span>
+    MeanAIMs=mean(DYSKAaims);
+    errAIMs=std(DYSKAaims);
+    figure
+    errorbar(MeanAIMs,errAIMs,<span class="string">'Color'</span>,ColorsAMAN(1,:),<span class="string">'LineWidth'</span>,3);
+    hold <span class="string">on</span>
+    MeanAIMs=mean(AMANaims);
+    errAIMs=std(AMANaims);
+    errorbar(MeanAIMs,errAIMs,<span class="string">'Color'</span>,ColorsAMAN(2,:),<span class="string">'LineWidth'</span>,3);
+    legend({<span class="string">'+Vehicle'</span>,<span class="string">'+ Amantadine'</span>})
+<span class="comment">% ERROR BARS</span>
+    MeanAIMs=mean(DYSKCaims);
+    errAIMs=std(DYSKCaims);
+    figure
+    errorbar(MeanAIMs,errAIMs,<span class="string">'Color'</span>,ColorsCLZ(1,:),<span class="string">'LineWidth'</span>,3);
+    hold <span class="string">on</span>
+    MeanAIMs=mean(CLZaims);
+    errAIMs=std(CLZaims);
+    errorbar(MeanAIMs,errAIMs,<span class="string">'Color'</span>,ColorsCLZ(2,:),<span class="string">'LineWidth'</span>,3);
+    legend({<span class="string">'+Vehicle'</span>,<span class="string">'+ Clozapine'</span>})
+<span class="comment">% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %</span>
+</pre><pre class="codeoutput">*********
+</pre><img vspace="5" hspace="5" src="ScriptTest_09.png" alt=""> <img vspace="5" hspace="5" src="ScriptTest_10.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Script to Watch Data Setup #############################################
+close all;
+% It requires previously loaded data at: \Data Demo\AIMs.mat
+% Labels @AIMs.mat:
+% DYSKA, DYSKC, AMAN, CLZ
+load([pwd,'\Data Demo\AIMs.mat']);
+Labels={'DYSK_A','+Amantadine','DYSK_C','+Clozapine'};
+% Run once and paste AIMs data from sheet
+% DYSKA=[];
+% AMAN=[];
+% DYSKC=[];
+% CLZ=[];
+
+%  AIMs Score Options ##############################################
+% See Description:
+% >>help plot_aims
+% /global/global-sum/,
+% /basic/amplitude/,
+% /ALO-sum/ALO-basic/
+TypeDysk='global';
+% TimeIntervals: indexes for Minute Intervals:
+%   [20,40,60,80,100,120,140,160,180]
+%   [ 1, 2, 3, 4,  5,  6,  7,  8,  9]
+% Intervals=[2,3,4];
+Intervals=1:9;
+
+% plot_session(S_DYSKA,S_AMAN,S_DYSKC,S_CLZ,Labels);
+%% TIME BOXPLOTS AIMs All Together
+% AIMs Time Boxplots Series in the seme Figure
+[S_DYSKA,AIMS_DYSKA]=plot_aims(DYSKA,TypeDysk,Intervals);
+[S_AMAN,AIMS_AMAN]=plot_aims(AMAN,TypeDysk,Intervals);
+[S_DYSKC,AIMS_DYSKC]=plot_aims(DYSKC,TypeDysk,Intervals);
+[S_CLZ,AIMS_CLZ]=plot_aims(CLZ,TypeDysk,Intervals);
+FigAimsCLZ=gcf;
+FigAimsCLZ.Name=['All Boxplots '];
+
+%% RAINCLOUD PLOTS ********************************************************
+% Setup:
+% AIMs: {all, lo, li, Ax, Ol}
+KindofAIMs='all';
+% Get Data
+DYSKAaims=getfield(AIMS_DYSKA,KindofAIMs);
+AMANaims=getfield(AIMS_AMAN,KindofAIMs);
+DYSKCaims=getfield(AIMS_DYSKC,KindofAIMs);
+CLZaims=getfield(AIMS_CLZ,KindofAIMs);
+% Raincouds of AIMs Time & Raincloud+Boxplot of Session
+[ScoresAMAN,DeltaScoreAMAN,ColorsAMAN]=plot_aims_time(DYSKAaims,AMANaims,...
+                    Labels(1:2),Intervals);
+[ScoresCLZ,DeltaScoreCLZ,ColorsCLZ]=plot_aims_time(DYSKCaims,CLZaims,...
+                    Labels(3:4),Intervals);
+% Deltas Figure
+columns2boxplot(DeltaScoreAMAN,DeltaScoreCLZ,{'+AMAN';'+CLZ'})
+DeltaFig=gca;
+DeltaFig.YLim=[0,100];
+DeltaFig.Title.String='$\Delta$ Session AIMs';
+DeltaFig.Title.Interpreter='latex';
+%% TIME BOXPLOTS AIMs 
+% AIMs Time Boxplots Series in the seme Figure
+plot_aims(DYSKA,TypeDysk,Intervals,ColorsAMAN);
+plot_aims(AMAN,TypeDysk,Intervals,ColorsAMAN);
+FigAimsAMAN=gcf;
+FigAimsAMAN.Name=['Boxplots ',Labels{1},' & ',Labels{2}];
+plot_aims(DYSKC,TypeDysk,Intervals,ColorsCLZ);
+plot_aims(CLZ,TypeDysk,Intervals,ColorsCLZ);
+FigAimsCLZ=gcf;
+FigAimsCLZ.Name=['Boxplots ',Labels{3},' & ',Labels{4}];
+
+%% Tests ##################################################################
+% SESSION SCORES TESTS 
+% [h,p]=ttest(ScoresAMAN(:,1),ScoresAMAN(:,2))
+% [h,p]=ttest(ScoresCLZ(:,1),ScoresCLZ(:,2))
+% 
+% [h,p]=vartest2(ScoresAMAN(:,1),ScoresAMAN(:,2))
+% [h,p]=vartest2(ScoresCLZ(:,1),ScoresCLZ(:,2))
+% 
+% [p,h]=signtest(ScoresAMAN(:,1),ScoresAMAN(:,2))
+% [p,h]=signtest(ScoresCLZ(:,1),ScoresCLZ(:,2))
+% 
+% [p,h]=ranksum(ScoresAMAN(:,1),ScoresAMAN(:,2))
+% [p,h]=ranksum(ScoresCLZ(:,1),ScoresCLZ(:,2))
+% 
+% [p,h] = signrank(ScoresAMAN(:,1),ScoresAMAN(:,2))
+% [p,h] = signrank(ScoresCLZ(:,1),ScoresCLZ(:,2))
+% 
+% % Unpaired
+% [h,p]=ttest2(ScoresAMAN(:,1),ScoresCLZ(:,1))
+% [h,p]=ttest2(ScoresAMAN(:,2),ScoresCLZ(:,2))
+
+
+
+%% TIME EVALUATION COMPARATION
+% AIMs: {all, lo, li, Ax, Ol}
+KindofAIMs='all';
+DYSKAaims=getfield(AIMS_DYSKA,KindofAIMs);
+AMANaims=getfield(AIMS_AMAN,KindofAIMs);
+DYSKCaims=getfield(AIMS_DYSKC,KindofAIMs);
+CLZaims=getfield(AIMS_CLZ,KindofAIMs);
+
+% Tests for all Time Sets of AIMs
+for n=1:9
+        
+    %     AMANTADINE        # # #
+    A=DYSKAaims(:,n);
+    B=AMANaims(:,n);
+    [TTEST(n),PVAL(n)]=ttest(A,B);
+    [PVALW(n),WILCTEST(n)] = signrank(A,B);
+    [SIGNTEST(n),PVALS(n)] = vartest2(A,B);
+    [PVALR(n),RANKTEST(n)] = ranksum(A,B);
+    
+    %     CLOZAPINE         # # #
+    C=DYSKCaims(:,n);
+    D=CLZaims(:,n);
+    [TTESTC(n),PVALC(n)]=ttest(C,D);
+    [PVALWC(n),WILCTESTC(n)] = signrank(C,D);
+    [SIGNTESTC(n),PVALSC(n)] = vartest2(C,D);
+    [PVALRC(n),RANKTESTC(n)] = ranksum(C,D);
+    fprintf('*')
+end
+fprintf('\n')
+% ERROR BARS
+    MeanAIMs=mean(DYSKAaims);
+    errAIMs=std(DYSKAaims);
+    figure
+    errorbar(MeanAIMs,errAIMs,'Color',ColorsAMAN(1,:),'LineWidth',3);
+    hold on
+    MeanAIMs=mean(AMANaims);
+    errAIMs=std(AMANaims);
+    errorbar(MeanAIMs,errAIMs,'Color',ColorsAMAN(2,:),'LineWidth',3);
+    legend({'+Vehicle','+ Amantadine'})
+% ERROR BARS
+    MeanAIMs=mean(DYSKCaims);
+    errAIMs=std(DYSKCaims);
+    figure
+    errorbar(MeanAIMs,errAIMs,'Color',ColorsCLZ(1,:),'LineWidth',3);
+    hold on
+    MeanAIMs=mean(CLZaims);
+    errAIMs=std(CLZaims);
+    errorbar(MeanAIMs,errAIMs,'Color',ColorsCLZ(2,:),'LineWidth',3);
+    legend({'+Vehicle','+ Clozapine'})
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+##### SOURCE END #####
+--></body></html>
