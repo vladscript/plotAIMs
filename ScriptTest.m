@@ -109,14 +109,23 @@ plot_mean_std([ColorsAMAN;ColorsCLZ],Labels,KindofAIMs,'SEM',DYSKAaims,...
 alphaval=0.01;
 % 2-WAY ANOVA
 % Factor Treatment Factor Time 
+MCmethod='bonferroni';
+% AMANTADINE
 Nmice=size(DYSKAaims,1);
-[p,tbl,stats] = anova2([DYSKAaims;AMANaims;DYSKCaims;CLZaims],nmice);
-c = multcompare(stats,'Estimate','row','CType','bonferroni','Alpha',alphaval);
+[p,tbl,stats] = anova2([DYSKAaims;AMANaims],Nmice);
+c = multcompare(stats,'Estimate','row','CType',MCmethod,'Alpha',alphaval);
+% CLOZAPINE
+Nmice=size(DYSKCaims,1);
+[p,tbl,stats] = anova2([DYSKCaims;CLZaims],Nmice);
+c = multcompare(stats,'Estimate','row','CType',MCmethod,'Alpha',alphaval);
+% bonferroni
+c = multcompare(stats,'Estimate','row','CType',MCmethod,'Alpha',alphaval);
 
 % SESSION SCORES TESTS  ###################################################
 % 1-way ANOVA
 [~,~,stats] = anova1([ScoresAMAN,ScoresCLZ]);
 c = multcompare(stats,'CType','bonferroni','Alpha',alphaval);
+% 'tukey-kramer' (default) | 'hsd' | 'lsd' | 'bonferroni' | 'dunn-sidak' | 'scheffe'
 
 % t-TESTs *****************************************************************
 % Paired Conditions
@@ -147,7 +156,10 @@ c = multcompare(stats,'CType','bonferroni');
 % Wilcoxon signed rank test PAIRED
 [p,h] = signrank(ScoresAMAN(:,1),ScoresAMAN(:,2))
 [p,h] = signrank(ScoresCLZ(:,1),ScoresCLZ(:,2))
+[p,h,stats] = signrank(ScoresAMAN(:,1),ScoresAMAN(:,2),'method','approximate')
+[p,h,stats] = signrank(ScoresCLZ(:,1),ScoresCLZ(:,2),'method','approximate')
 % Wilcoxon rank sum test UNPAIRED 
+[p,h,Zval]=ranksum(DeltaScoreAMAN,DeltaScoreCLZ,'method','approximate')
 [p,h]=ranksum(ScoresAMAN(:,1),ScoresCLZ(:,1))
 [p,h]=ranksum(ScoresAMAN(:,2),ScoresCLZ(:,2))
 % 
@@ -171,10 +183,14 @@ for n=1:9
     % Wilcoxon signed rank test
     [PVALW_A(n),WILCTEST_A(n)] = signrank(A,B);
     [PVALW_C(n),WILCTEST_C(n)] = signrank(C,D);
-    % t.test
-    [TTEST_A(n),PVAL_A(n)]=ttest(A,B);
-    [TTEST_C(n),PVAL_C(n)]=ttest(C,D);
+%     % t.test
+%     [TTEST_A(n),PVAL_A(n)]=ttest(A,B);
+%     [TTEST_C(n),PVAL_C(n)]=ttest(C,D);
     fprintf('*')
 end
 fprintf('\n')
+% Estimate false discovery rate (FDR) for multiple hypothesis testing
+% by Benjamini and Hochberg, 1995
+fdrBH_A = mafdr(PVALW_A,'BHFDR','true');
+fdrBH_C = mafdr(PVALW_C,'BHFDR','true');
 %% END OF THE WORLD #######################################################

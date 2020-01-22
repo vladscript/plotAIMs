@@ -1,7 +1,7 @@
 % Function to calculate AIMs score
 % ACcording to the AIMs score scale
 % from Cenci & Lundblad1 2007
-% and Sebastianutto et al 2016 [Cenci Group as well]
+% and Sebastianutto et al 2016 [Cenci's]
 % Type of Input Data
 %   36 values of 9 intervals
 %   in 4 AIMs:
